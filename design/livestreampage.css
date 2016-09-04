@@ -1,0 +1,29 @@
+#TwitchEmbedWrap {
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+#TwitchVideoWrap,
+#TwitchChatWrap {
+    display: inline-block;
+}
+
+#TwitchVideoEmbed,
+#TwitchChatEmbed {
+    height: 372px;
+}
+
+#TwitchVideoEmbed {
+    width: 660px;
+}
+
+#TwitchChatEmbed {
+    width: 300px;
+}
+
+/* Live indicator rule */
+.TwitchChannelIsLive::after {
+    color: #E60000;
+    content: "\2219";
+    margin-left: 5px;
+}
