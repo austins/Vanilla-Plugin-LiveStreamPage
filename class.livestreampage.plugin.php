@@ -21,7 +21,7 @@ $PluginInfo['LiveStreamPage'] = array(
 );
 
 class LiveStreamPagePlugin extends Gdn_Plugin {
-    /** Route settings for the page. */
+    /** Route settings for the live page. */
     const ROUTE = 'live';
     const ROUTE_EXPRESSION_SUFFIX = '$';
     const ROUTE_TARGET = 'plugin/livestreampage';
@@ -54,7 +54,8 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
         $route = Gdn::router()->matchRoute(self::ROUTE . self::ROUTE_EXPRESSION_SUFFIX);
         $link .= ($route && $route['Destination'] === self::ROUTE_TARGET) ? self::ROUTE : self::ROUTE_TARGET;
 
-        return $withDomain ? url($link, $withDomain) : $link;
+        // If $withDomain === false, don't pass $link through url() since $link is used for the main menu link.
+        return $withDomain ? url($link, true) : $link;
     }
 
     /**
@@ -64,7 +65,7 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
      */
     public function base_render_before($sender) {
         if ($sender->Menu) {
-            $sender->Menu->addLink('LiveStreamPage', t('Live'), $this->getLivePageLink(false), false,
+            $sender->Menu->addLink('LiveStreamPage', t('Live'), self::getLivePageLink(false), false,
                 array('class' => 'LiveStreamPageMenuLink'));
 
             $channelName = self::getChannelName();
@@ -116,7 +117,7 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
         $configModule->initialize(array(
             'Plugins.LiveStreamPage.ChannelName' => array(
                 'LabelCode' => 'Twitch Channel Name',
-                'Description' => 'Enter the Twitch channel name you would like to display on the page.',
+                'Description' => 'Enter the Twitch channel name you would like to display on the live page.',
                 'Control' => 'TextBox'
             ),
             'Plugins.LiveStreamPage.ShowLiveIndicator' => array(
