@@ -54,7 +54,7 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
         $route = Gdn::router()->matchRoute(self::ROUTE . self::ROUTE_EXPRESSION_SUFFIX);
         $link .= ($route && $route['Destination'] === self::ROUTE_TARGET) ? self::ROUTE : self::ROUTE_TARGET;
 
-        // If $withDomain === false, don't pass $link through url() since $link is used for the main menu link.
+        // If $withDomain == false, don't pass $link through url() since $link is used for the main menu link.
         return $withDomain ? url($link, true) : $link;
     }
 
