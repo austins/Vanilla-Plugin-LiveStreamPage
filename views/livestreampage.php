@@ -24,9 +24,9 @@ if (!$this->ChannelName) {
         'frameborder' => '0',
         'scrolling' => 'no'
     ));
+    echo '</div>';
 
-    echo '</div>';
-    echo '</div>';
+    echo '</div>'; // #TwitchEmbedWrap
 
     echo wrap(anchor(t('Watch the live video at www.twitch.tv.'),
         'https://www.twitch.tv/' . $this->ChannelName . '?tt_medium=live_embed&tt_content=text_link'), 'p',
