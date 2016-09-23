@@ -71,7 +71,9 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
 
             $channelName = self::getChannelName();
             $clientId = c('Plugins.LiveStreamPage.ClientID');
-            if ($channelName && $clientId && c('Plugins.LiveStreamPage.ShowLiveIndicator')) {
+            if ($channelName && $clientId && c('Plugins.LiveStreamPage.ShowLiveIndicator')
+                && $sender->MasterView !== 'admin'
+            ) {
                 // Add live status indicator.
                 $sender->addCssFile('livestreampage.css', 'plugins/LiveStreamPage');
                 $sender->addJsFile('livestreampage.js', 'plugins/LiveStreamPage');
