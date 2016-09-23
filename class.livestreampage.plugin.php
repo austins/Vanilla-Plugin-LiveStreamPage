@@ -28,6 +28,7 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
 
     /**
      * Get channel name from config.
+     * Helper method that does not apply rawurlencode() if config is false or not set.
      *
      * @return bool|string The channel name passed through rawurlencode() or false if not set.
      */
@@ -69,11 +70,13 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
                 array('class' => 'LiveStreamPageMenuLink'));
 
             $channelName = self::getChannelName();
-            if ($channelName && c('Plugins.LiveStreamPage.ShowLiveIndicator', true)) {
+            $clientId = c('Plugins.LiveStreamPage.ClientID');
+            if ($channelName && $clientId && c('Plugins.LiveStreamPage.ShowLiveIndicator')) {
                 // Add live status indicator.
                 $sender->addCssFile('livestreampage.css', 'plugins/LiveStreamPage');
                 $sender->addJsFile('livestreampage.js', 'plugins/LiveStreamPage');
                 $sender->addDefinition('LiveStreamPage_ChannelName', $channelName);
+                $sender->addDefinition('LiveStreamPage_ClientID', $clientId);
             }
         }
     }
@@ -121,14 +124,23 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
                 'Control' => 'TextBox'
             ),
             'Plugins.LiveStreamPage.ShowLiveIndicator' => array(
-                'LabelCode' => 'Show status indicator next to main menu link when channel is live?',
+                'LabelCode' => 'Show live status indicator next to main menu link when channel is live?'
+                    . ' Requires valid Twitch client ID.',
                 'Control' => 'Checkbox'
-            )
+            ),
+            'Plugins.LiveStreamPage.ClientID' => array(
+                'LabelCode' => 'Twitch Client ID',
+                'Description' => 'Enter your'
+                    . ' <a href="https://blog.twitch.tv/client-id-required-for-kraken-api-calls-afbb8e95f843#119e"'
+                    . ' target="_blank">Twitch API client ID</a>. Required by live status indicator.',
+                'Control' => 'TextBox'
+            ),
         ));
 
         $sender->ConfigurationModule = $configModule;
 
         $sender->title(t('Live Stream Page Settings'));
+        $sender->addJsFile('livestreampage.settings.js', 'plugins/LiveStreamPage');
         $sender->addSideMenu();
         $sender->render('settings', '', 'plugins/LiveStreamPage');
     }
@@ -137,9 +149,6 @@ class LiveStreamPagePlugin extends Gdn_Plugin {
      * Setup code to be run when this plugin is enabled.
      */
     public function setup() {
-        // Initialize default setting.
-        saveToConfig('Plugins.LiveStreamPage.ShowLiveIndicator', true);
-
         // Add route for the live page.
         if (!Gdn::router()->matchRoute(self::ROUTE . self::ROUTE_EXPRESSION_SUFFIX)) {
             Gdn::router()->setRoute(self::ROUTE . self::ROUTE_EXPRESSION_SUFFIX, self::ROUTE_TARGET, 'Internal');

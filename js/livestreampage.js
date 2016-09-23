@@ -1,13 +1,21 @@
 jQuery(document).ready(function($) {
     /* Live indicator */
     var channelName = gdn.definition('LiveStreamPage_ChannelName');
+    var clientId = gdn.definition('LiveStreamPage_ClientID');
 
-    if (channelName) {
+    if (channelName && clientId) {
         // Check if Twitch channel is live.
-        $.getJSON('https://api.twitch.tv/kraken/streams/' + channelName, function(channel) {
-            if (channel["stream"] != null) {
-                // Twitch channel is live.
-                $('a.LiveStreamPageMenuLink').addClass('TwitchChannelIsLive'); // Show live indicator.
+        $.ajax({
+            type: 'GET',
+            url: 'https://api.twitch.tv/kraken/streams/' + channelName,
+            headers: {
+                'Client-ID': clientId
+            },
+            success: function(channel) {
+                if (channel["stream"] != null) {
+                    // Twitch channel is live.
+                    $('a.LiveStreamPageMenuLink').addClass('TwitchChannelIsLive'); // Show live indicator.
+                }
             }
         });
     }
