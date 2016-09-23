@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-    /* Live indicator */
+    /* Live status indicator */
     var channelName = gdn.definition('LiveStreamPage_ChannelName');
     var clientId = gdn.definition('LiveStreamPage_ClientID');
 
