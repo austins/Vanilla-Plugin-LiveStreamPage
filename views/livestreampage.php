@@ -20,7 +20,7 @@ if (!$this->ChannelName) {
     echo '<div id="TwitchChatWrap">';
     echo wrap('', 'iframe', array(
         'id' => 'TwitchChatEmbed',
-        'src' => 'https://www.twitch.tv/' . $this->ChannelName . '/chat?popout=',
+        'src' => 'https://www.twitch.tv/embed/' . $this->ChannelName . '/chat',
         'frameborder' => '0',
         'scrolling' => 'no'
     ));
