@@ -10,7 +10,7 @@
 $PluginInfo['LiveStreamPage'] = array(
     'Name' => 'Live Stream Page',
     'Description' => 'Your viewers can watch your Twitch live stream from within your Vanilla Forums with this plugin.',
-    'Version' => '1.1.0',
+    'Version' => '1.1.1',
     'RequiredApplications' => array('Vanilla' => '2.2'),
     'MobileFriendly' => true,
     'Author' => 'Austin S.',
